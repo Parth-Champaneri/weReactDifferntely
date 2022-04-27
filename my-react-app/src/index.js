@@ -5,7 +5,6 @@ import './index.css';
 function Square(props) {
   return (
     <button
-
       className="square"
       onClick={props.onClick}>
       {props.value}
@@ -17,7 +16,7 @@ class Board extends React.Component {
 
   renderSquare(i) {
     return (<Square
-      key={i}
+      key={'sq' + i}
       value={this.props.squares[i]}
       onClick={() => this.props.onClick(i)}
     />);
@@ -34,9 +33,8 @@ class Board extends React.Component {
         this.renderSquare(index)
       )
     }
-
     return (
-      <div className="board-row">
+      <div key={'row' + r} className="board-row">
         {squares}
       </div>
     )
@@ -51,9 +49,7 @@ class Board extends React.Component {
     }
     return (
       <div>
-        <div className="board-row">
-          {rows}
-        </div>
+        {rows}
       </div>
     );
   }
@@ -65,12 +61,12 @@ class Game extends React.Component {
     super(props)
     this.state = {
       stepNumber: 0,
+      isAsc: true,
       history: [{ squares: Array(9).fill(null), }],
       xIsNext: true,
     }
   }
   handleClick(i) {
-
     const position = [i % 3, Math.floor(i / 3)];
 
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
@@ -92,13 +88,18 @@ class Game extends React.Component {
       ),
       xIsNext: !this.state.xIsNext
     });
-    console.log(history);
   }
 
   jumpTo(step) {
     this.setState({
       stepNumber: step,
       xIsNext: (step % 2) === 0,
+    })
+  }
+
+  toggleMoves() {
+    this.setState({
+      isAsc: !this.state.isAsc,
     })
   }
 
@@ -109,12 +110,13 @@ class Game extends React.Component {
     let status;
 
     //show moves
+    const isAsc = this.state.isAsc ? '1' : '2'
     const moves = history.map((step, move) => {
       const desc = move ?
         'Go to move #' + move :
         'Go to game start';
       return (
-        <li key={move}>
+        <li key={isAsc + move}>
           <button className={this.state.stepNumber === move ? 'active' : 'inactive'} onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       )
@@ -135,7 +137,12 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <ol>{this.state.isAsc ? moves : moves.reverse()}</ol>
+          <div>
+            <button onClick={() => this.toggleMoves()}>
+              Toggle
+            </button>
+          </div>
         </div>
       </div>
     );
