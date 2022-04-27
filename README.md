@@ -3,4 +3,5 @@ This is my attempt to be fluent in React by the time of my interview within a we
 
 1) Completed Tic-Tac-Toe game from offical React Tutorial
 - Completed suggested activities:
-- - Save (col, row) position of move
+  - Save (col, row) position of move
+  - Dynamically styled component, currently selected move
