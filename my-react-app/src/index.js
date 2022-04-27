@@ -4,7 +4,9 @@ import './index.css';
 
 function Square(props) {
   return (
-    <button className="square"
+    <button
+
+      className="square"
       onClick={props.onClick}>
       {props.value}
     </button>
@@ -15,28 +17,42 @@ class Board extends React.Component {
 
   renderSquare(i) {
     return (<Square
+      key={i}
       value={this.props.squares[i]}
       onClick={() => this.props.onClick(i)}
     />);
   }
 
+  renderRow(r) {
+    //r = row
+    const squares = []
+    const offset = r * 3; // 3 = number of squares per row
+
+    for (var sq = 0; sq <= 2; sq++) {
+      const index = sq + offset;
+      squares.push(
+        this.renderSquare(index)
+      )
+    }
+
+    return (
+      <div className="board-row">
+        {squares}
+      </div>
+    )
+  }
+
   render() {
+
+    const rows = []
+
+    for (var x = 0; x <= 2; x++) {
+      rows.push(this.renderRow(x));
+    }
     return (
       <div>
         <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
+          {rows}
         </div>
       </div>
     );
@@ -99,7 +115,7 @@ class Game extends React.Component {
         'Go to game start';
       return (
         <li key={move}>
-          <button className={this.state.stepNumber == move ? 'active' : 'inactive'} onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button className={this.state.stepNumber === move ? 'active' : 'inactive'} onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       )
     })
