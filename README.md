@@ -7,3 +7,6 @@ This is my attempt to be fluent in React by the time of my interview within a we
   - Dynamically styled component, currently selected move
   - Rewrite Board to use two loops instead of hardcoding
   - Toggle list of moves
+  - Highlight the 3 boxes when someone wins
+  - Display 'draw' if no one wins
+
